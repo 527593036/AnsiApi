@@ -4,6 +4,7 @@
 AnsiApi暂时不支持ansible2的playbook
 
 Installation
+
 1、python环境安装
 pip install tornado
 pip install futures
@@ -14,6 +15,7 @@ pip install ansible==1.9.5
 3、supervisor安装(略)
 
 Configuration
+
 1、inventory配置
 config.py中ANSIBLE_HOSTS_LIST配置成对应的inventory获取脚本
 
