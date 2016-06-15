@@ -18,6 +18,7 @@ Configuration
 config.py中ANSIBLE_HOSTS_LIST配置成对应的inventory获取脚本
 
 2、nginx配置
+
 upstream AnsiApi {
     server 127.0.0.1:10000;
     server 127.0.0.1:10001;
@@ -47,6 +48,7 @@ server {
 }
 
 3、supervisor配置文件(/etc/supervisor/conf.d/AnsiApi.conf)
+
 [group:tornadoes]
 programs=tornado-10000,tornado-10001,tornado-10002,tornado-10003
 
