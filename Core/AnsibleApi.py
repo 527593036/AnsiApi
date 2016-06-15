@@ -31,9 +31,6 @@ elif ANSIBLE_VERSION >= 2:
 
 class Ansible2Runner(object):
     def __init__(self, ansible_host_list, module_name=None,ansible_patt=None,ansible_args=None):
-        """ Runs any ansible module given the module's name and access
-        to the api instance (done through the hookup method).
-        """
         self.ansible_host_list = ansible_host_list
         self.module_name = module_name
         self.ansible_patt = ansible_patt
@@ -41,20 +38,20 @@ class Ansible2Runner(object):
         self.Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check'])
         self.options = self.Options(connection='local', module_path='/path/to/mymodules', forks=100, become=None, become_method=None, become_user=None, check=False)
         self.passwords = dict(vault_pass='secret')
-    
-    
+
+
     def execute(self):
         loader = DataLoader()
         variable_manager = VariableManager()
-        
+
         inventory = Inventory(
             loader=loader,
             variable_manager=variable_manager,
             host_list=self.ansible_host_list
         )
-        
+
         variable_manager.set_inventory(inventory)
-        
+
         play_source = {}
         if self.module_args:
             play_source = {
@@ -79,16 +76,16 @@ class Ansible2Runner(object):
                     }
                 }]
             }
-        
+
         play = Play.load(
             play_source,
             variable_manager=variable_manager,
             loader=loader
         )
-        
+
         task_queue_manager = None
         callback = SilentCallbackModule()
-        
+
         try:
             task_queue_manager = TaskQueueManager(
                 inventory=inventory,
@@ -102,28 +99,28 @@ class Ansible2Runner(object):
         finally:
             if task_queue_manager is not None:
                 task_queue_manager.cleanup()
-                
-        return self.evaluate_results(callback)    
-    
+
+        return self.evaluate_results(callback)
+
     def evaluate_results(self, callback):
         ret = {}
         ret['dark'] = {}
         ret['contacted'] = {}
         for server, result in callback.unreachable.items():
             ret['dark']['server'] = result
-            
+
         for server, answer in callback.contacted.items():
              ret['contacted']['server'] = answer['result']
-            
+
         return ret
-    
+
 class AnsibleApi(object):
     def __init__(self, ansible_host_list):
         self.ansible_host_list = ansible_host_list
-        
+
     def remote_execute(self, ansible_mod, ansible_patt, ansible_args=None):
         ret = None
-        
+
         if ANSIBLE_VERSION < 2:
             if ansible_args:
                 runner_obj = Runner(
@@ -138,42 +135,42 @@ class AnsibleApi(object):
                         host_list=self.ansible_host_list,
                         pattern=ansible_patt,
                     )
-            
+
             ret = runner_obj.run()
         elif ANSIBLE_VERSION >= 2:
             runner_obj = Ansible2Runner(self.ansible_host_list, ansible_mod, ansible_patt, ansible_args)
             ret = runner_obj.execute()
-        
+
         return ret
-    
+
     def shell_remote_execute(self, ansible_patt, ansible_args):
         mod = "shell"
         ret = self.remote_execute(mod, ansible_patt, ansible_args)
         return ret
-    
+
     def remote_ping(self, ansible_patt):
         mod = "ping"
         ret = self.remote_execute(mod, ansible_patt)
         return ret
-    
+
     def remote_setup(self, ansible_patt):
         mod = "setup"
         ret = self.remote_execute(mod, ansible_patt)
         return ret
-    
+
     def fetch_remote_file(self, ansible_patt, src_file, dest_dir):
         mod = "fetch"
         ansible_args = "src=%s dest=%s" % (src_file, dest_dir)
         ret = self.remote_execute(mod, ansible_patt, ansible_args)
         return ret
-    
+
     def playbook_api(self, yml_fp):
         ret = None
         if ANSIBLE_VERSION < 2:
             stats = callbacks.AggregateStats()
             playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
             runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
-            
+
             pb = PlayBook(
                 playbook=yml_fp,
                 host_list=self.ansible_host_list,
@@ -181,11 +178,11 @@ class AnsibleApi(object):
                 callbacks=playbook_cb,
                 runner_callbacks=runner_cb
             )
-        
+
             ret = pb.run()
         elif ANSIBLE_VERSION >= 2:
             ret = {'contacted': '暂时不支持'}
-            
+
         return ret
 
 if __name__ == '__main__':
@@ -200,4 +197,3 @@ if __name__ == '__main__':
     # print ret_playbook
     ret_fetch_file = run_obj.fetch_remote_file('192.168.33.11,192.168.33.12', '/home/zhujin/db.sqlite3', 'logs/')
     print ret_fetch_file
-    
