@@ -9,7 +9,7 @@ import httplib2
 
 data = {
     'group_or_host': '192.168.33.11',
-    'cmd': 'ps -ef | grep Ansi'
+    'cmd': 'pwd'
 }
 
 req_body = json.dumps(data)
@@ -26,7 +26,8 @@ print content
 data = {
 	'module': 'shell',
     'group_or_host': '192.168.33.11',
-    'arg': '/usr/local/bin/rsync_AnsiApi_to_src.sh'
+    #'arg': '/usr/local/bin/rsync_AnsiApi_to_src.sh'
+    'arg': 'cd /usr/local/;pwd'
 }
 
 req_body = json.dumps(data)

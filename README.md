@@ -2,7 +2,7 @@
 
 # 注意事项
 
-AnsiApi暂时不支持ansible2的playbook
+AnsiApi已支持ansible, ansible2的playbook,adhoc
 
 # Installation
 

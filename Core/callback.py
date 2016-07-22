@@ -7,7 +7,7 @@ Created on 2016年6月13日
 
 from ansible.plugins.callback import CallbackBase
 
-class SilentCallbackModule(CallbackBase):
+class AnsiCallBack(CallbackBase):
     def __init__(self):
         self.unreachable = {}
         self.contacted = {}
