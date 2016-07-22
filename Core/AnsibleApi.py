@@ -7,7 +7,6 @@ Created on 2016年5月20日
 '''
 
 import os
-import json
 import ansible
 
 PATH = os.path.split(os.path.realpath(__file__))[0]
@@ -30,7 +29,7 @@ class AnsibleApi(object):
         runner_obj = AnsiRun(self.ansible_host_list)
         ret = runner_obj.execute(ansible_mod, ansible_patt, ansible_args)
         
-        return json.dumps(ret,indent=4)
+        return ret
     
     def shell_remote_execute(self, ansible_patt, ansible_args):
         mod = "shell"
@@ -58,18 +57,19 @@ class AnsibleApi(object):
         runner_obj = AnsiRun(self.ansible_host_list)
         ret = runner_obj.playbook_api(yml_fp)
             
-        return json.dumps(ret,indent=4)
+        return ret
 
 if __name__ == '__main__':
+    import json
     run_obj = AnsibleApi(PATH + "/../hosts/inentory.sh")
     ret_shell = run_obj.shell_remote_execute('192.168.33.11,192.168.33.12,192.168.33.10', 'uname -a')
-    print ret_shell
+    print json.dumps(ret_shell,indent=4)
     # ret_ping = run_obj.remote_ping('all')
     # print ret_ping
     # ret_setup = run_obj.remote_setup('192.168.33.12')
     # print ret_setup
     ret_playbook = run_obj.playbook_api(PATH + "/../hosts/test.yml")
-    print ret_playbook
+    print json.dumps(ret_playbook,indent=4)
     #ret_fetch_file = run_obj.fetch_remote_file('192.168.33.11,192.168.33.12', '/home/zhujin/db.sqlite3', 'logs/')
     #print ret_fetch_file
     

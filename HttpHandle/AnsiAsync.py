@@ -5,6 +5,8 @@ Created on 2016年6月11日
 @author: zhujin
 '''
 import json
+import os
+import yaml
 from tornado import gen
 from tornado.web import HTTPError
 from tornado.web import RequestHandler, asynchronous
@@ -32,9 +34,9 @@ class CmdHandler(RequestHandler):
             data = json.loads(self.request.body)
         except ValueError as e:
             raise HTTPError(400, e.message)
-        logger.info("post data: %s" % data)
+        logger.info("[CMD] post data: %s" % data)
         response = yield self.exec_cmd(data.get("group_or_host"), data.get("cmd"))
-        logger.info(response)
+        logger.info("[CMD] %s" % response)
         self.write(json.dumps(response))
         self.finish()
 
@@ -54,13 +56,13 @@ class AdhocHandler(RequestHandler):
             data = json.loads(self.request.body)
         except ValueError as e:
             raise HTTPError(400, reason=e.message)
-        logger.info("post data: %s" % data)
+        logger.info("[ADHOC] post data: %s" % data)
         module, group_or_host, arg = data.get("module"), data.get("group_or_host"), data.get("arg")
         if not(module and group_or_host and arg):
             raise HTTPError(400, reason="ansible module and group_or_host are required. if ansible module need arg,arg is required")
 
         response = yield self.adhoc(module, group_or_host, arg)
-        logger.info(response)
+        logger.info("[ADHOC] %s" % response)
         self.write(json.dumps(response))
         self.finish()
 
@@ -80,27 +82,20 @@ class PlaybookHandler(RequestHandler):
             data = json.loads(self.request.body)
         except ValueError as e:
             raise HTTPError(400, reason=e.message)
-        logger.info("post data: %s" % data) 
+        logger.info("[PLAYBOOK] post data: %s" % data) 
         
-        yml_fp = data.get("yml")
-        if not(yml_fp):
+        yml_fp = data.get("yml").encode("utf-8") 
+        if not os.path.isfile(yml_fp):
             raise HTTPError(400, reason="playbook file is required.")
-        
-        response = self.pb(yml_fp)
-        logger.info(response)
+            
+        response =  yield self.pbex(yml_fp)
+        logger.info("[PLAYBOOK] %s" % response)
         self.write(json.dumps(response))
         self.finish()
         
     @run_on_executor
-    def pb(self, yml_fp):
-        res = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
-        result = res.playbook_api(yml_fp)
-        return result
+    def pbex(self, yml_fp):
+        resp = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
+        ret = resp.playbook_api(yml_fp)
+        return ret
         
-        
-    
-
-
-
-
-

@@ -8,7 +8,7 @@ import json
 import httplib2
 
 data = {
-    'group_or_host': '192.168.33.11',
+    'group_or_host': '192.168.33.10,192.168.33.11',
     'cmd': 'pwd'
 }
 
@@ -20,12 +20,12 @@ api = "http://ansible.api.xz.com/exec_cmd"
 
 response, content = http.request(api, 'POST', body=req_body, headers={'Content-Type': 'application/json'})
 
-print response
+print response['status']
 print content
 
 data = {
 	'module': 'shell',
-    'group_or_host': '192.168.33.11',
+    'group_or_host': '192.168.33.10,192.168.33.11',
     #'arg': '/usr/local/bin/rsync_AnsiApi_to_src.sh'
     'arg': 'cd /usr/local/;pwd'
 }
@@ -39,7 +39,6 @@ response, content = http.request(api, 'POST', body=req_body, headers={'Content-T
 print response['status']
 print content
 
-
 data = {'yml': '/usr/local/AnsiApi/yaml/t.yml'}
 
 req_body = json.dumps(data)
@@ -48,7 +47,7 @@ api = "http://ansible.api.xz.com/pb"
 
 response, content = http.request(api, 'POST', body=req_body, headers={'Content-Type': 'application/json'})
 
-print response
+print response['status']
 print content
 
 
