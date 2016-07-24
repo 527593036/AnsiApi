@@ -2,6 +2,8 @@
 
 # 注意事项
 
+Ansible API
+
 AnsiApi已支持ansible, ansible2的playbook,adhoc
 
 # Installation
@@ -12,7 +14,7 @@ pip install tornado
 
 pip install futures
 
-pip install ansible==1.9.5
+pip install ansible
 
 2、nginx安装（略）
 
