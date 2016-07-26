@@ -44,7 +44,7 @@ shell
 
 curl -H "Content-type: application/json" -X POST \
  	-d '{"module":"shell","group_or_host":"192.168.33.11","arg":"pwd"}' \
- 	http://ansi.api.deploy.cn/adhoc;echo
+ 	http://xx.xx.com/adhoc;echo
 	
 python
 
