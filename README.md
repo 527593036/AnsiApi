@@ -37,3 +37,31 @@ config.py中ANSIBLE_HOSTS_LIST配置成对应的inventory获取脚本
 1、nginx启动
 
 2、supervisor启动
+
+# 使用方法
+
+shell
+
+curl -H "Content-type: application/json" -X POST \
+ 	-d '{"module":"shell","group_or_host":"192.168.33.11","arg":"pwd"}' \
+ 	http://ansi.api.deploy.cn/adhoc;echo
+	
+python
+
+import httplib2
+
+data = {
+	'module': 'shell',
+    'group_or_host': '192.168.33.10,192.168.33.11',
+    'arg': 'cd /usr/local/;pwd'
+}
+
+req_body = json.dumps(data)
+
+api = "http://xx.xx.com/adhoc"
+
+response, content = http.request(api, 'POST', body=req_body, headers={'Content-Type': 'application/json'})
+
+print response['status']
+
+print content
