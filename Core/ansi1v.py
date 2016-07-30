@@ -25,12 +25,16 @@ class Ansible1Runner(object):
                     module_args=ansible_args,
                     host_list=self.ansible_host_list,
                     pattern=ansible_patt,
+                    become=True,
+                    become_user='root',
                 )
         else:
             runner_obj = Runner(
                     module_name=ansible_mod,
                     host_list=self.ansible_host_list,
                     pattern=ansible_patt,
+                    become=True,
+                    become_user='root',
                 )
         
         ret = runner_obj.run()
