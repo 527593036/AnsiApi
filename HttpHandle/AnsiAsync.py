@@ -23,6 +23,8 @@ logger = mylogger("AnsiAsync", config.LOG_FP)
 class IndexHandler(RequestHandler):
     def get(self):
         self.write("Ansible API")
+        self.finish()
+        
 
 class CmdHandler(RequestHandler):
     executor = ThreadPoolExecutor(cpu_count())
@@ -44,6 +46,32 @@ class CmdHandler(RequestHandler):
     def exec_cmd(self, group_or_host, cmd):
         res = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
         result = res.shell_remote_execute(group_or_host, cmd)
+        return result
+        
+class SetupHandler(RequestHandler):
+    executor = ThreadPoolExecutor(cpu_count())
+
+    @asynchronous
+    @gen.coroutine
+    def post(self):
+        try:
+            data = json.loads(self.request.body)
+        except ValueError as e:
+            raise HTTPError(400, reason=e.message)
+        logger.info("[SETUP] post data: %s" % data)
+        group_or_host = data.get("group_or_host")
+        if not group_or_host:
+            raise HTTPError(400, reason="ansible setup module need group_or_host.")
+
+        response = yield self.setup('setup', group_or_host)
+        logger.info("[SETUP] %s" % response)
+        self.write(json.dumps(response))
+        self.finish()
+
+    @run_on_executor
+    def setup(self, group_or_host):
+        res = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
+        result = res.remote_setup(group_or_host)
         return result
     
 class AdhocHandler(RequestHandler):

@@ -17,6 +17,7 @@ def main():
     urls = [
         (r"/", AnsiAsync.IndexHandler),
         (r"/exec_cmd", AnsiAsync.CmdHandler),
+        (r"/setup", AnsiAsync.SetupHandler),
         (r"/adhoc", AnsiAsync.AdhocHandler),
         (r"/pb", AnsiAsync.PlaybookHandler),
     ]

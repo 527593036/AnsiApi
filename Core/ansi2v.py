@@ -19,7 +19,7 @@ from callback import AnsiCallBack
 
 
 class Ansible2Runner(object):
-    def __init__(self, ansible_host_list, module_name=None,ansible_patt=None,ansible_args=None):
+    def __init__(self, ansible_host_list):
         """ Runs any ansible module given the module's name and access
         to the api instance (done through the hookup method).
         """
@@ -44,7 +44,7 @@ class Ansible2Runner(object):
         self.passwords = dict(vault_pass='secret')
     
     
-    def execute(self,module_name,ansible_patt,ansible_args):
+    def execute(self,module_name,ansible_patt,ansible_args=None):
         loader = DataLoader()
         variable_manager = VariableManager()
         
@@ -72,11 +72,11 @@ class Ansible2Runner(object):
         else:
             play_source = {
                 'name': "Suitable Play",
-                'hosts': self.ansible_patt,
+                'hosts': ansible_patt,
                 'gather_facts': 'no',
                 'tasks': [{
                     'action': {
-                        'module': self.module_name
+                        'module': module_name
                     }
                 }]
             }
