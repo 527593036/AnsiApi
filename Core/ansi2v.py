@@ -20,9 +20,6 @@ from callback import AnsiCallBack
 
 class Ansible2Runner(object):
     def __init__(self, ansible_host_list):
-        """ Runs any ansible module given the module's name and access
-        to the api instance (done through the hookup method).
-        """
         self.ansible_host_list = ansible_host_list
         #self.module_name = module_name
         #self.ansible_patt = ansible_patt
@@ -59,7 +56,7 @@ class Ansible2Runner(object):
         play_source = {}
         if ansible_args:
             play_source = {
-                'name': "Suitable Play",
+                'name': "AnsiApi Play",
                 'hosts': ansible_patt,
                 'gather_facts': 'no',
                 'tasks': [{
@@ -71,7 +68,7 @@ class Ansible2Runner(object):
             }
         else:
             play_source = {
-                'name': "Suitable Play",
+                'name': "AnsiApi Play",
                 'hosts': ansible_patt,
                 'gather_facts': 'no',
                 'tasks': [{
