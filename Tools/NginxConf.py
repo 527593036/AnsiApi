@@ -26,7 +26,7 @@ class NginxUpsConf(object):
         config = self.get_tmeplate('upstreams.conf.jinja2').render(service_groups=self.group_services(services))
 
         if config is None:
-            raise NginxException('创建文件后，文件为空，请检查!!')
+            raise NginxException('生成配置，但配置为空，请检查!!')
             
         return config
         

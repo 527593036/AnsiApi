@@ -1,9 +1,5 @@
-{% for group in service_groups.get('http', []) %}
-{% for service_name,service_instance in group.items() %}
-upstream {{ service_name }}{
-	{% for inst in service_instance %}
-	server {{ inst['instance']['Address'] }}:{{ inst['instance']['ServicePort'] }} max_fails=3 fail_timeout=60 weight=1;
-	{% endfor %}
-}
-{% endfor %}
+{% for group in service_groups.get('http', []) %}{% for service_name,service_instance in group.items() %}upstream {{ service_name }}{
+    {% for inst in service_instance %}
+    server {{ inst['instance']['Address'] }}:{{ inst['instance']['ServicePort'] }} max_fails=3 fail_timeout=60 weight=1;{% endfor %}
+}{% endfor %}
 {% endfor %}
