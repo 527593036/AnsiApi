@@ -2,7 +2,7 @@
 
 # 用途
 
-AnsiApi是ansible的http接口，通过向AnsiApi发送命令，通过ansible远程执行命令
+AnsiApi是Ansible API，通过向AnsiApi发送命令，通过ansible远程执行命令
 
 AnsiApi已支持ansible, ansible2的playbook,adhoc
 
