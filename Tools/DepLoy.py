@@ -34,7 +34,7 @@ def main():
     ansi_api_client = AnsiClinet(AnsiApiHost)
     
     if yaml_file:
-        yml_fp = PATH + '/yaml/' + yaml_file
+        yaml_file = PATH + '/yaml/' + yaml_file
         data = {
             'yml': yaml_file,
         }

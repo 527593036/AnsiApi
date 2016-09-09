@@ -63,7 +63,7 @@ class SetupHandler(RequestHandler):
         if not group_or_host:
             raise HTTPError(400, reason="ansible setup module need group_or_host.")
 
-        response = yield self.setup('setup', group_or_host)
+        response = yield self.setup(group_or_host)
         logger.info("[SETUP] %s" % response)
         self.write(json.dumps(response))
         self.finish()
@@ -124,6 +124,5 @@ class PlaybookHandler(RequestHandler):
     @run_on_executor
     def pbex(self, yml_fp):
         resp = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
-        ret = resp.playbook_api(yml_fp)
-        return ret
-        
+        result = resp.playbook_api(yml_fp)
+        return result 
