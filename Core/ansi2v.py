@@ -25,8 +25,8 @@ class Ansible2Runner(object):
         #self.ansible_patt = ansible_patt
         #self.module_args = ansible_args
         self.Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check', 'listhosts', 'listtasks', 'listtags', 'syntax'])
-        # connection值'local'指ansible本机，非本机值为smart
-        self.options = self.Options(connection='smart',
+        # connection ansible ships with a ‘paramiko’ SSH, native ssh (just called ‘ssh’), ‘local’ connection type
+        self.options = self.Options(connection='ssh',
                                      module_path='/path/to/mymodules', 
                                      forks=100, 
                                      become=True, 
