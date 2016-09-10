@@ -85,11 +85,14 @@ class AdhocHandler(RequestHandler):
         except ValueError as e:
             raise HTTPError(400, reason=e.message)
         logger.info("[ADHOC] post data: %s" % data)
-        module, group_or_host, arg = data.get("module"), data.get("group_or_host"), data.get("arg")
-        if not(module and group_or_host and arg):
+        module, group_or_host, arg = data.get("module"), data.get("group_or_host"), data.get("arg",None)
+        if not(module and group_or_host):
             raise HTTPError(400, reason="ansible module and group_or_host are required. if ansible module need arg,arg is required")
 
-        response = yield self.adhoc(module, group_or_host, arg)
+        if arg:
+            response = yield self.adhoc(module, group_or_host, arg)
+        else:
+            response = yield self.adhoc(module, group_or_host)
         logger.info("[ADHOC] %s" % response)
         self.write(json.dumps(response))
         self.finish()
@@ -124,5 +127,6 @@ class PlaybookHandler(RequestHandler):
     @run_on_executor
     def pbex(self, yml_fp):
         resp = AnsibleApi(config.ANSIBLE_HOSTS_LIST)
-        result = resp.playbook_api(yml_fp)
-        return result 
+        ret = resp.playbook_api(yml_fp)
+        return ret
+        
