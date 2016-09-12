@@ -9,7 +9,7 @@ import os
 
 PATH = os.path.split(os.path.realpath(__file__))[0]
 
-ANSIBLE_HOSTS_LIST = PATH + "/inventory.sh"
+ANSIBLE_HOSTS_LIST = PATH + "/hosts/inventory.sh"
 LOG_FP = PATH + "/logs/AnsiAsync.log"
 AnsiApiHost = "http://xxx.xxx.xxx.xxx"
 
