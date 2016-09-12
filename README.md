@@ -40,13 +40,14 @@ config.py中ANSIBLE_HOSTS_LIST配置成对应的inventory获取脚本
 
 # 使用方法
 
+```shell
 shell
 
 curl -H "Content-type: application/json" -X POST \
  	-d '{"module":"shell","group_or_host":"192.168.33.11","arg":"pwd"}' \
  	http://xx.xx.com/adhoc;echo
-	
-python
+```
+```python
 
 import httplib2
 
@@ -65,3 +66,4 @@ response, content = http.request(api, 'POST', body=req_body, headers={'Content-T
 print response['status']
 
 print content
+```
