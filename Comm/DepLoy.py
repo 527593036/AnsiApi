@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 # -*-coding: utf-8-*-
 '''
 Created on 2016年8月24日
@@ -31,10 +32,10 @@ def main():
     m = args.module
     argument = args.arg
     
-    ansi_api_client = AnsiClinet(AnsiApiHost)
+    ansi_api_client = AnsiClient(AnsiApiHost)
     
     if yaml_file:
-        yaml_file = PATH + '/yaml/' + yaml_file
+        #yaml_file = PATH + '/yaml/' + yaml_file
         data = {
             'yml': yaml_file,
         }
@@ -53,7 +54,7 @@ def main():
             }    
         print json.dumps(ansi_api_client.adhoc(data))
     else:
-        print "Usage: python DepLoy.py -h,example: python DepLoy.py -yaml test.yml or python DepLoy.py -m shell -goh all -a pwd"
+        print "Usage: python DepLoy.py -h,example: python DepLoy.py -yaml /path/to/test.yml or python DepLoy.py -m shell -goh all -a pwd"
         
 if __name__ == '__main__':
     main()

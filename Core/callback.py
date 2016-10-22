@@ -1,9 +1,4 @@
 #-*-coding: utf-8-*-
-'''
-Created on 2016年6月13日
-
-@author: zhujin
-'''
 
 from ansible.plugins.callback import CallbackBase
 
