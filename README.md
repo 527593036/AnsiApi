@@ -1,10 +1,14 @@
 # AnsiApi
 
+AnsiApi is restful for ansible
+
+支持ansible v1,v2
+
 # 用途
 
-AnsiApi是Ansible API，通过向AnsiApi发送命令，通过ansible远程执行命令
+AnsiApi是Ansible API，通过向AnsiApi发送命令，通过ansible远程执行命令，配置管理，文件管理等
 
-AnsiApi已支持ansible, ansible2的playbook,adhoc
+AnsiApi已支持playbook,adhoc
 
 # Installation
 
