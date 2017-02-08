@@ -26,7 +26,7 @@ class Ansible2Runner(object):
         #self.module_args = ansible_args
         self.Options = namedtuple('Options', ['connection', 'module_path', 'forks', 'become', 'become_method', 'become_user', 'check', 'listhosts', 'listtasks', 'listtags', 'syntax'])
         # connection ansible ships with a ‘paramiko’ SSH, native ssh (just called ‘ssh’), ‘local’ connection type
-        self.options = self.Options(connection='ssh',
+        self.options = self.Options(connection='smart',
                                      module_path='/path/to/mymodules', 
                                      forks=100, 
                                      become=True, 
